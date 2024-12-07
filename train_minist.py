@@ -67,7 +67,7 @@ y_test = np.array(y_test)
 print(f"X_train shape: {X_train.shape}, y_train shape: {y_train.shape}")
 print(f"X_test shape: {X_test.shape}, y_test shape: {y_test.shape}")
 
-# MLP 모델 초기화
+# MLP 모델 생성
 input_size = 28 * 28  # MNIST 이미지 크기 (28x28)
 hidden_size = 128     # 은닉층 뉴런 개수
 output_size = 10      # 출력 뉴런 개수 (0~9 숫자)
@@ -76,13 +76,17 @@ learning_rate = 0.2   # 학습률
 mlp_model = MLPForMINIST(input_size, hidden_size, output_size, learning_rate)
 
 # 모델 학습
-epochs = 1000
-early_stopping_patience = 10
-train_losses, test_losses = mlp_model.fit(
-    X_train, y_train, X_test, y_test, epoch=epochs, patience=early_stopping_patience
-)
+train_losses, test_losses = mlp_model.fit(X_train, y_train, X_test, y_test, epoch=500, patience=10)
 
 # 모델 평가
 y_pred = mlp_model.predict(X_test)
 accuracy = np.mean(y_pred == np.argmax(y_test, axis=1))
-print(f"Test Accuracy: {accuracy * 100:.2f}%")
+print(f"score: {accuracy * 100:.2f}")
+
+
+###########
+# 학습 완료된 모델 파라미터 저장
+save_folder = "mlp_model_params"
+mlp_model.save_model(save_folder)
+
+print(f"parameters saved ({save_folder})")
